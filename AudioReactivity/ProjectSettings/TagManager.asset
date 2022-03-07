@@ -9,6 +9,8 @@ TagManager:
   - Pick Up
   - Platform
   - spawnTrigger
+  - Spike
+  - Note
   layers:
   - Default
   - TransparentFX

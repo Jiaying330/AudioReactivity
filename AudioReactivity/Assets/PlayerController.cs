@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,9 +33,34 @@ public class PlayerController : MonoBehaviour
 
     public SpawnManager spawnManager;
 
+    public int Count;
+
+    public Text CountTxt;
+
     // Start is called before the first frame update
     void Start()
     {
+        Application.runInBackground = true; //allows unity to update when not in focus
+
+        //************* Instantiate the OSC Handler...
+        OSCHandler.Instance.Init();
+        OSCHandler
+            .Instance
+            .SendMessageToClient("pd", "/unity/trigger", "ready");
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/playseq", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/walk", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/volum", 0.1f);
+        //reset
+        Count = 0;
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count1", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count2", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count3", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count4", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count5", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count6", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count7", 0);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/count8", 0);
+
         characterController = GetComponent<CharacterController>();
     }
 
@@ -46,8 +72,8 @@ public class PlayerController : MonoBehaviour
             new Vector3(horizontalInput, 0, Mathf.Abs(horizontalInput) - 1);
         isGrounded =
             Physics
-                .CheckBox(transform.position - new Vector3(0.0f,0.1f,0.0f),
-                new Vector3(1,1,1)/2,
+                .CheckBox(transform.position - new Vector3(0.0f, 0.1f, 0.0f),
+                new Vector3(1, 1, 1) / 2,
                 Quaternion.identity,
                 groundLayers,
                 QueryTriggerInteraction.Ignore);
@@ -87,7 +113,29 @@ public class PlayerController : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other){
-        spawnManager.SpawnTriggerEntered();
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("spawnTrigger"))
+        {
+            spawnManager.SpawnTriggerEntered();
+        }
+        if (other.CompareTag("Note"))
+        {
+            //
+            Count++;
+            CountTxt.text = "Count: " + Count.ToString();
+            other.gameObject.SetActive(false);
+
+            //************* Send the message to the client...
+            OSCHandler
+                .Instance
+                .SendMessageToClient("pd", "/unity/trigger", Count);
+
+            //*************
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/count"+ Count.ToString(), 1);
+            
+            // Play Collectable SFX
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/collected", 1);
+        }
     }
 }

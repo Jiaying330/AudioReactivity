@@ -45,6 +45,8 @@
      <Compile Include="Assets\CamerFllow.cs" />
      <Compile Include="Assets\OSC\OSCMessage.cs" />
      <Compile Include="Assets\PlayerController.cs" />
+     <Compile Include="Assets\PlatformSpawner.cs" />
+     <Compile Include="Assets\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\Rotate.cs" />
      <Compile Include="Assets\Scripts\MovePlayer.cs" />
      <Compile Include="Assets\Scripts\RotateAroundPoint.cs" />
@@ -55,8 +57,7 @@
      <Compile Include="Assets\OSC\OSCClient.cs" />
      <Compile Include="Assets\JumpController.cs" />
      <Compile Include="Assets\FollowPlayer.cs" />
-     <Compile Include="Assets\platformSpawner.cs" />
-     <Compile Include="Assets\SpawnManager.cs" />
+     <Compile Include="Assets\ObstacleSpawner.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
