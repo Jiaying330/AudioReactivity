@@ -9,12 +9,13 @@ public class PlayerController : MonoBehaviour
     LayerMask groundLayers;
 
     [SerializeField]
-    private float runSpeed = 8f;
+    private float runSpeed;
+    private float saveSpeed;
 
     [SerializeField]
     private float jumpHeight = 2f;
 
-    private float gravity = -50f;
+    private float gravity = -30f;
 
     private CharacterController characterController;
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool isGrounded;
 
+    // private bool isMoving;
     private float horizontalInput;
 
     private bool jumpPressed;
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     public Text CountTxt;
 
+    public GameObject explode;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +54,7 @@ public class PlayerController : MonoBehaviour
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/playseq", 1);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/walk", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/volum", 0.1f);
+
         //reset
         Count = 0;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count1", 0);
@@ -115,11 +120,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("spawnTrigger"))
+        if (other.gameObject.CompareTag("spawnTrigger"))
         {
             spawnManager.SpawnTriggerEntered();
         }
-        if (other.CompareTag("Note"))
+        if (other.gameObject.CompareTag("Note"))
         {
             //
             Count++;
@@ -132,10 +137,40 @@ public class PlayerController : MonoBehaviour
                 .SendMessageToClient("pd", "/unity/trigger", Count);
 
             //*************
-            OSCHandler.Instance.SendMessageToClient("pd", "/unity/count"+ Count.ToString(), 1);
-            
+            OSCHandler
+                .Instance
+                .SendMessageToClient("pd",
+                "/unity/count" + Count.ToString(),
+                1);
+
             // Play Collectable SFX
-            OSCHandler.Instance.SendMessageToClient("pd", "/unity/collected", 1);
+            OSCHandler
+                .Instance
+                .SendMessageToClient("pd", "/unity/collected", 1);
+        }
+
+        if(other.gameObject.CompareTag("Projectile")){
+            Debug.Log("died");
+            Instantiate(explode, gameObject.transform.position, explode.transform.rotation);
+            this.gameObject.SetActive(false);
+
+        }
+
+        if (other.gameObject.CompareTag("Block"))
+        {
+            Debug.Log("Hello???");
+            // isGrounded = true;
+            saveSpeed  = runSpeed;
+            runSpeed = 0;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Block"))
+        {
+            // isGrounded=false;
+            runSpeed = saveSpeed;
         }
     }
 }

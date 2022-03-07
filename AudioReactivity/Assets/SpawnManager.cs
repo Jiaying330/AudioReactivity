@@ -33,7 +33,18 @@ public class SpawnManager : MonoBehaviour
             if (Player.GetComponent<PlayerController>().Count >= 1)
             {
                 obstacleSpawner.addBlock(pos);
-                // Debug.Log("Added at " + pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 2)
+            {
+                obstacleSpawner.addMiniBlock(pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 3)
+            {
+                obstacleSpawner.addProjectile(pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 4)
+            {
+                obstacleSpawner.addGap(platformSpawner.plats[0]);
             }
         }
     }

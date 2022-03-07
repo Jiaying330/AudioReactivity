@@ -11,6 +11,8 @@ TagManager:
   - spawnTrigger
   - Spike
   - Note
+  - Block
+  - Projectile
   layers:
   - Default
   - TransparentFX

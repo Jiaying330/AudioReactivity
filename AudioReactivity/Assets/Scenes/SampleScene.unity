@@ -186,7 +186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &56688758
 MonoBehaviour:
@@ -201,8 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 8681388187047858636, guid: f9ae651c1ff85cf48ab5915a2fefa9e3, type: 3}
-  miniBlock: {fileID: 0}
-  projectile: {fileID: 0}
+  miniBlock: {fileID: 2999003896114974295, guid: 2e2565bb43debd248a9b1df84bde86cd, type: 3}
+  projectile: {fileID: 7651451283824562518, guid: c1461b9a7bd7c71499a978a22198423b, type: 3}
   blockCount: 0
   miniBlockCount: 0
   projectileCount: 0
@@ -1605,8 +1605,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305626757}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -22.08, y: -33.42, z: 0.03}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: -42.4, y: -33.8, z: -67.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1063189297}
@@ -1619,7 +1619,7 @@ Transform:
   - {fileID: 231253120}
   m_Father: {fileID: 1996960308}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1328798935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5719030150831080555, guid: a48c2542b136ba244ae112f8fb20d356, type: 3}
@@ -2102,6 +2102,7 @@ GameObject:
   - component: {fileID: 1996960308}
   - component: {fileID: 1996960307}
   - component: {fileID: 1996960306}
+  - component: {fileID: 1996960310}
   - component: {fileID: 1996960305}
   - component: {fileID: 1996960309}
   - component: {fileID: 1996960304}
@@ -2127,12 +2128,13 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 8
-  runSpeed: 5
+  runSpeed: 8
   jumpHeight: 2
   isGrounded: 0
   spawnManager: {fileID: 56688755}
   Count: 0
   CountTxt: {fileID: 143128210}
+  explode: {fileID: 4056733371891896221, guid: f0a6f27181916ba42aec193480acfce5, type: 3}
 --- !u!65 &1996960305
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2225,9 +2227,22 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &1996960310
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996960303}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0208406, y: 0.70253325, z: 0.6099378}
+  m_Center: {x: -0.0019717216, y: 0.14873338, z: 0.43516535}
 --- !u!1 &2013712467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7603769822598898952, guid: b0a73e76fe755ec4f9ab19fee27984d8, type: 3}
@@ -2534,7 +2549,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1773680112877049714, guid: efda99236f5c3014495a363a5385c8c8, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1773680112877049714, guid: efda99236f5c3014495a363a5385c8c8, type: 3}
       propertyPath: m_LocalPosition.x

@@ -29,16 +29,25 @@ public class ObstacleSpawner : MonoBehaviour
         blockCount++;
     }
 
-    public void addMiniBlock()
+    public void addMiniBlock(Vector3 position)
     {
+        int theX = blockCount+8;
+        Instantiate(miniBlock,
+        position + new Vector3(theX, 0.5f, 0),
+        Quaternion.identity);
+        blockCount++;
     }
 
-    public void addProjectile()
+    public void addProjectile(Vector3 position)
     {
+        Instantiate(projectile,
+        position + new Vector3(0, 2.5f, 0),
+        Quaternion.identity);
     }
 
-    public void addGap()
+    public void addGap(GameObject plat)
     {
+        plat.transform.localScale.Set(29,0,0);
     }
 
     // Update is called once per frame
