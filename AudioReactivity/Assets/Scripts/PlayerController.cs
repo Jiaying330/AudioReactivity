@@ -188,6 +188,7 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/death", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/gameOver", 1);
         yield return new WaitForSeconds(1.5f);
         this.transform.position = new Vector3(transform.position.x+10, 10,0);
         
@@ -196,5 +197,6 @@ public class PlayerController : MonoBehaviour
         runSpeed = saveSpeed;
         isDead = false;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/respawn", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/gameStart", 1);
     }
 }
