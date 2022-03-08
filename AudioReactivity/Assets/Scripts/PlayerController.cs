@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count8", 0);
 
         // start the PD file
-        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 0);
         saveSpeed = runSpeed;
         characterController = GetComponent<CharacterController>();
     }

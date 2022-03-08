@@ -20,6 +20,7 @@ public class MainMenuAnimation : MonoBehaviour
         StartCoroutine(ClickTransition());
         Time.timeScale = 1;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/clicked", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 1);
     }
 
     IEnumerator ClickTransition()
