@@ -44,21 +44,25 @@ public class SpawnManager : MonoBehaviour
     {
         spawning = true;
         yield return new WaitForSeconds(1.6f);
-        Debug.Log("Spawned!");
-        if(Player.GetComponent<PlayerController>().Count >= 1){
-            obstacleSpawner.addBlock(pos);
-        }
-        if (Player.GetComponent<PlayerController>().Count >= 2)
+
+        if (Player.GetComponent<PlayerController>().runSpeed != 0)
         {
-            obstacleSpawner.addMiniBlock (pos);
-        }
-        if (Player.GetComponent<PlayerController>().Count >= 3)
-        {
-            obstacleSpawner.addProjectile (pos);
-        }
-        if (Player.GetComponent<PlayerController>().Count >= 1)
-        {
-            obstacleSpawner.addGap(platformSpawner.plats[2]);
+            if (Player.GetComponent<PlayerController>().Count >= 1)
+            {
+                obstacleSpawner.addBlock(pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 2)
+            {
+                obstacleSpawner.addMiniBlock(pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 3)
+            {
+                obstacleSpawner.addProjectile(pos);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 1)
+            {
+                obstacleSpawner.addGap(platformSpawner.plats[2]);
+            }
         }
         spawning = false;
     }
