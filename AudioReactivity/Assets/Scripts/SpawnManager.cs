@@ -27,25 +27,12 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        pos = new Vector3(Player.transform.position.x + 30, 0, Player.transform.position.z);
+        pos = new Vector3(Player.transform.position.x + 15, 0, Player.transform.position.z);
 
-        if (Player.GetComponent<PlayerController>().Count >= 1 && spawning == false)
+        if (spawning == false)
         {
             SpwanBox();
         }
-
-        // if (Player.GetComponent<PlayerController>().Count >= 2)
-        // {
-        //     obstacleSpawner.addMiniBlock (pos);
-        // }
-        // if (Player.GetComponent<PlayerController>().Count >= 3)
-        // {
-        //     obstacleSpawner.addProjectile (pos);
-        // }
-        // if (Player.GetComponent<PlayerController>().Count >= 4)
-        // {
-        //     obstacleSpawner.addGap(platformSpawner.plats[0]);
-        // }
     }
 
     public void SpwanBox()
@@ -58,7 +45,21 @@ public class SpawnManager : MonoBehaviour
         spawning = true;
         yield return new WaitForSeconds(1.6f);
         Debug.Log("Spawned!");
-        obstacleSpawner.addBlock(pos);
+        if(Player.GetComponent<PlayerController>().Count >= 1){
+            obstacleSpawner.addBlock(pos);
+        }
+        if (Player.GetComponent<PlayerController>().Count >= 2)
+        {
+            obstacleSpawner.addMiniBlock (pos);
+        }
+        if (Player.GetComponent<PlayerController>().Count >= 3)
+        {
+            obstacleSpawner.addProjectile (pos);
+        }
+        if (Player.GetComponent<PlayerController>().Count >= 1)
+        {
+            obstacleSpawner.addGap(platformSpawner.plats[2]);
+        }
         spawning = false;
     }
 
