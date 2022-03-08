@@ -13,30 +13,32 @@ public class PlatformSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(plats != null && plats.Count >0){
-            plats = plats.OrderBy(r=> r.transform.position.x).ToList();
+        if (plats != null && plats.Count > 0)
+        {
+            plats = plats.OrderBy(r => r.transform.position.x).ToList();
         }
     }
 
     public void MovePlat()
     {
-        
+
         GameObject movePlat = plats[0];
         plats.Remove(movePlat);
         float newX = plats[plats.Count - 1].transform.position.x + offset;
-        movePlat.transform.position =new Vector3(newX,0,0);
+        movePlat.transform.position = new Vector3(newX, 0, 0);
         plats.Add(movePlat);
 
         platCount++;
-        if(platCount%2==0){
+        if (platCount % 2 == 0)
+        {
             //generate Notes
-            Instantiate(note,new Vector3(newX,2.5f,0),Quaternion.identity);
+            Instantiate(note, new Vector3(newX, 2.5f, 0), Quaternion.identity);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

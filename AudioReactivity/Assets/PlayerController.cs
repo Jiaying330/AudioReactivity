@@ -48,15 +48,12 @@ public class PlayerController : MonoBehaviour
 
         //************* Instantiate the OSC Handler...
         OSCHandler.Instance.Init();
-        OSCHandler
-            .Instance
-            .SendMessageToClient("pd", "/unity/trigger", "ready");
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/trigger", "ready");
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/playseq", 1);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/walk", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/volum", 0.1f);
 
         //reset
-        Count = 0;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count1", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count2", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count3", 0);
@@ -65,6 +62,8 @@ public class PlayerController : MonoBehaviour
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count6", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count7", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/count8", 0);
+
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 1);
 
         characterController = GetComponent<CharacterController>();
     }
@@ -76,12 +75,7 @@ public class PlayerController : MonoBehaviour
         transform.forward =
             new Vector3(horizontalInput, 0, Mathf.Abs(horizontalInput) - 1);
         isGrounded =
-            Physics
-                .CheckBox(transform.position - new Vector3(0.0f, 0.1f, 0.0f),
-                new Vector3(1, 1, 1) / 2,
-                Quaternion.identity,
-                groundLayers,
-                QueryTriggerInteraction.Ignore);
+            Physics.CheckBox(transform.position - new Vector3(0.0f, 0.1f, 0.0f), new Vector3(1, 1, 1) / 2, Quaternion.identity, groundLayers, QueryTriggerInteraction.Ignore);
 
         if (isGrounded && velocity.y < 0)
         {
@@ -101,6 +95,7 @@ public class PlayerController : MonoBehaviour
         if (jumpPressed)
         {
             jumpTimer = Time.time;
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/jump", 1);
         }
         if (
             isGrounded &&
@@ -116,6 +111,12 @@ public class PlayerController : MonoBehaviour
 
         //vertical velocity
         characterController.Move(velocity * Time.deltaTime);
+
+        OSCHandler
+                .Instance
+                .SendMessageToClient("pd",
+                "/unity/count" + Count.ToString(),
+                1);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -137,11 +138,6 @@ public class PlayerController : MonoBehaviour
                 .SendMessageToClient("pd", "/unity/trigger", Count);
 
             //*************
-            OSCHandler
-                .Instance
-                .SendMessageToClient("pd",
-                "/unity/count" + Count.ToString(),
-                1);
 
             // Play Collectable SFX
             OSCHandler
@@ -149,7 +145,8 @@ public class PlayerController : MonoBehaviour
                 .SendMessageToClient("pd", "/unity/collected", 1);
         }
 
-        if(other.gameObject.CompareTag("Projectile")){
+        if (other.gameObject.CompareTag("Projectile"))
+        {
             Debug.Log("died");
             Instantiate(explode, gameObject.transform.position, explode.transform.rotation);
             this.gameObject.SetActive(false);
@@ -160,7 +157,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Hello???");
             // isGrounded = true;
-            saveSpeed  = runSpeed;
+            saveSpeed = runSpeed;
             runSpeed = 0;
         }
     }
