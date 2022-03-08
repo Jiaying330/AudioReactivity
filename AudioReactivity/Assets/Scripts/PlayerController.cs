@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,11 +38,9 @@ public class PlayerController : MonoBehaviour
 
     public int Count;
 
-    public Text CountTxt;
+    public TextMeshProUGUI countDisplay;
 
     public GameObject explode;
-    
-    bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -67,8 +66,6 @@ public class PlayerController : MonoBehaviour
 
         // start the PD file
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 1);
-
-        saveSpeed = runSpeed;
 
         characterController = GetComponent<CharacterController>();
     }
@@ -122,9 +119,6 @@ public class PlayerController : MonoBehaviour
                 .SendMessageToClient("pd",
                 "/unity/count" + Count.ToString(),
                 1);
-        if(this.transform.position.y<=-2 && isDead == false){
-            deathRespawn();
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -138,7 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             //
             Count++;
-            CountTxt.text = "Count: " + Count.ToString();
+            countDisplay.text = "Count: " + Count.ToString();
             other.gameObject.SetActive(false);
 
             //************* Send the message to the client...
@@ -158,14 +152,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("died");
             Instantiate(explode, gameObject.transform.position, explode.transform.rotation);
-            this.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            runSpeed = 0;
+            this.gameObject.SetActive(false);
             deathRespawn();
         }
 
         if (other.gameObject.CompareTag("Block"))
         {
             // isGrounded = true;
+            saveSpeed = runSpeed;
             runSpeed = 0;
         }
     }
@@ -186,14 +180,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator deathRespawnWait()
     {
-        isDead = true;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/death", 1);
-        this.transform.position = new Vector3(transform.position.x+10, 10,0);
-        
-        yield return new WaitForSeconds(1f);
-        this.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        runSpeed = saveSpeed;
-        isDead = false;
+        yield return new WaitForSeconds(1.5f);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/respawn", 1);
     }
 }
