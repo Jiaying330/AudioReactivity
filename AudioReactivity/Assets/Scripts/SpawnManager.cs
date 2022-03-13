@@ -15,6 +15,7 @@ public class SpawnManager : MonoBehaviour
     Vector3 pos;
 
     bool spawning = false;
+    private int project = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +43,13 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnBoxWait()
     {
+        
         spawning = true;
         yield return new WaitForSeconds(1.6f);
 
         if (Player.GetComponent<PlayerController>().runSpeed != 0)
         {
+            project++;
             if (Player.GetComponent<PlayerController>().Count >= 1)
             {
                 obstacleSpawner.addBlock(pos);
@@ -55,13 +58,18 @@ public class SpawnManager : MonoBehaviour
             {
                 obstacleSpawner.addMiniBlock(pos);
             }
-            if (Player.GetComponent<PlayerController>().Count >= 3)
+            if (Player.GetComponent<PlayerController>().Count >= 3 && project%2==0)
             {
+
                 obstacleSpawner.addProjectile(pos);
             }
             if (Player.GetComponent<PlayerController>().Count >= 1)
             {
                 obstacleSpawner.addGap(platformSpawner.plats[2]);
+            }
+            if (Player.GetComponent<PlayerController>().Count >= 5)
+            {
+                obstacleSpawner.addBlock(new Vector3(pos.x+2,pos.y,pos.z));
             }
         }
         spawning = false;
