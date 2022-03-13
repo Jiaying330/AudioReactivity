@@ -41,7 +41,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     public void addGap(GameObject plat)
     {
-        plat.transform.localScale = new Vector3(28, 1, 1);
+        plat.transform.localScale = new Vector3(27, 1, 1);
         // plat.transform.localScale-= new Vector3(1,0,0);
         Debug.Log("gap");
     }

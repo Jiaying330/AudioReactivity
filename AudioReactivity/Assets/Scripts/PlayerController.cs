@@ -121,7 +121,10 @@ public class PlayerController : MonoBehaviour
                 "/unity/count" + Count.ToString(),
                 1);
 
-        if(this.transform.position.y<=-2 && isDead == false){
+        if (this.transform.position.y <= -2 && isDead == false)
+        {
+            runSpeed = 0;
+            velocity.y = 0;
             deathRespawn();
         }
     }
@@ -135,7 +138,6 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Note"))
         {
-            //
             Count++;
             countDisplay.text = "Count: " + Count.ToString();
             other.gameObject.SetActive(false);
@@ -187,16 +189,21 @@ public class PlayerController : MonoBehaviour
     IEnumerator deathRespawnWait()
     {
         isDead = true;
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 0);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/death", 1);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/gameOver", 1);
+        this.gameObject.GetComponent<BoxCollider>().enabled = false;
         yield return new WaitForSeconds(1.5f);
-        this.transform.position = new Vector3(transform.position.x+10, 10,0);
-        
+        this.transform.position = new Vector3(transform.position.x + 10, 20, 0);
+
         yield return new WaitForSeconds(1f);
         this.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        runSpeed = saveSpeed;
         isDead = false;
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/respawn", 1);
         OSCHandler.Instance.SendMessageToClient("pd", "/unity/gameStart", 1);
+        yield return new WaitForSeconds(0.5f);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/start", 1);
+        this.gameObject.GetComponent<BoxCollider>().enabled = true;
+        runSpeed = saveSpeed;
     }
 }
